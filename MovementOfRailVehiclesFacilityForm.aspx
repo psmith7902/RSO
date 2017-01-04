@@ -1,71 +1,59 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MovementOfRailVehiclesFacilityForm.aspx.cs"
-    Inherits="SafetyComplianceForms.MovementofRailVehicles,ComplianceForms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8ed9a85dceac8478"
-    MasterPageFile="../_catalogs/masterpage/v4.master" meta:progid="SharePoint.WebPartPages.Document" %>
-
-<%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls"
-    Assembly="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
+<%@ Assembly Name="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Page Language="C#" Inherits="Microsoft.SharePoint.WebControls.LayoutsPageBase" MasterPageFile="~/sites/safety/_catalogs/masterpage/seattle.master" MainContentID="PlaceHolderMain" %>
+<%@ Import Namespace="Microsoft.SharePoint.WebPartPages" %>
+<%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Import Namespace="Microsoft.SharePoint" %>
-<%@ Assembly Name="Microsoft.Web.CommandUI, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
-    <link rel="stylesheet" type="text/css" href="/_layouts/1033/styles/Themable/forms.css" />
-    <link rel="stylesheet" type="text/css" href="/_layouts/1033/styles/CoreV4.css" />
-    <link type="text/css" rel="Stylesheet" href="/_layouts/1033/STYLES/CustomStyles/CForms.css" />
-    <script type="text/javascript" src="<%= SPContext.Current.Web.Url %>/SiteAssets/SFTYCMPL_Script.js"></script>
-    <script type="text/javascript" src="<%= SPContext.Current.Web.Url %>/SiteAssets/jquery-1.11.2.min.js"></script>
+<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+
+<asp:Content ContentPlaceHolderID="PlaceHolderPageTitle" runat="server">
+   <SharePoint:ProjectProperty Property="Title" runat="server" />MovementOfRailVehiclesFacility    
+   <SharePoint:ListItemProperty runat="server" />
+
+</asp:Content>
+<asp:Content ContentPlaceHolderID="PlaceHolderPageImage" runat="server">
+    <SharePoint:AlphaImage ID="onetidtpweb1" Src="/_layouts/15/images/wiki.png?rev=40" Width="145" Height="54" Alt="" runat="server" />
+
+</asp:Content>
+<asp:Content ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
+    <meta name="CollaborationServer" content="SharePoint Team Web Site" />
+    <SharePoint:ScriptBlock runat="server">
+        var navBarHelpOverrideKey = "WSSEndUser";
+    </SharePoint:ScriptBlock>
+    <SharePoint:RssLink runat="server" />
+
+   
+    <SharePoint:ScriptLink Name="clienttemplates.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink Name="clientforms.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink Name="clientpeoplepicker.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink Name="autofill.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink Name="sp.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink Name="sp.runtime.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink Name="sp.core.js" runat="server" LoadAfterUI="true" Localizable="false" />
+
+    
+    <script type="text/javascript" src="<%= SPContext.Current.Web.Url %>/_layouts/15/SP.Taxonomy.js"></script>
+    <script type="text/javascript" src="<%= SPContext.Current.Web.Url %>/SiteAssets/JavaScript/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="<%= SPContext.Current.Web.Url %>/_layouts/15/SP.js"></script>
+    
+
     <script type="text/javascript">
-        function disablePanel() {
-            if (Page_ClientValidate("")) {
-                $("#<%=btnSubmit.ClientID%>").show();
-                $("#<%=btnCancel.ClientID%>").hide();
-                $("#<%=btnClear.ClientID%>").hide();
-                $("#<%=btnDelete.ClientID%>").hide();
-                $("#<%=trreviewMessage.ClientID%>").show();
-                $("#<%=pnlReviewItems.ClientID%> :input").prop("disabled", true);
-                $("#<%=btnAddFollowUp.ClientID%>").prop("disabled", true);
-                $("#<%=idcenablepanel.ClientID%>").show();
-                $("#<%=idrdisablepanel.ClientID%>").hide();
-                $("td.ms-formbody").each(function () {
-                    $(this).find("div[Title='People Picker']").attr("contentEditable", false);
-                    $(this).find("div[Title='People Picker']").attr("style", "word-wrap: break-word; overflow-x: hidden; color: windowtext; height: 18px; background-color: #F6F6F6;");
-                    $(this).find("div[Title='Object Picker']").attr("contentEditable", false);
-                    $(this).find("div[Title='Object Picker']").attr("style", "word-wrap: break-word; overflow-x: hidden; color: windowtext; height: 18px; background-color: #F6F6F6;");
-                    $(this).find("a[Title='Check Names']").attr("disabled", true);
-                    $(this).find("a[Title='Browse']").attr("disabled", true);
-                });
+        var formListName = "SitePages/MovementOfRailVehicleFacilityForm"; /*Form as listed in SP2010 Designer*/
+        var followupListName = "MovementOfRailVehicleFacilityForm_FollowUpDetails";
+        var FormIDKey = "RSOFormID";
+        var followupformID = "RSOFormID";
+        var FormCode = 'RSO';
 
+        var currentWebSiteUrl = "<%= SPContext.Current.Web.Url %>";
 
-                $("#s4-workspace").animate({ scrollTop: $('#WebPartWPQ1').offset().top }, 'fast');
-            }
-        }
+        var getQueryString = function (field, url) {
+            var href = url ? url : window.location.href;
+            var reg = new RegExp('[?&]' + field + '=([^&]*)', 'i');
+            var string = reg.exec(href);
+            return string ? string[1] : null;
+        };
 
-
-        function enablePanel() {
-            if (Page_ClientValidate("")) {
-                $("#<%=btnSubmit.ClientID%>").hide();
-                $("#<%=btnCancel.ClientID%>").show();
-                $("#<%=btnClear.ClientID%>").show();
-                $("#<%=btnDelete.ClientID%>").show();
-                $("#<%=trreviewMessage.ClientID%>").hide();
-                $("#<%=pnlReviewItems.ClientID%> :input").prop("disabled", false);
-                $("#<%=btnAddFollowUp.ClientID%>").prop("disabled", false);
-                $("#<%=idcenablepanel.ClientID%>").hide();
-                $("#<%=idrdisablepanel.ClientID%>").show();
-                $("td.ms-formbody").each(function () {
-                    $(this).find("div[Title='People Picker']").attr("contentEditable", true);
-                    $(this).find("div[Title='People Picker']").attr("style", "word-wrap: break-word; overflow-x: hidden; color: windowtext; height: 18px; background-color: window;");
-                    $(this).find("div[Title='Object Picker']").attr("contentEditable", true);
-                    $(this).find("div[Title='Object Picker']").attr("style", "word-wrap: break-word; overflow-x: hidden; color: windowtext; height: 18px; background-color: window;");
-                    $(this).find("a[Title='Check Names']").attr("disabled", false);
-                    $(this).find("a[Title='Browse']").attr("disabled", false);
-                });
-
-                $("#<%=txtR.ClientID%>").prop("disabled", true);
-
-                $("#s4-workspace").animate({ scrollTop: $('#WebPartWPQ1').offset().top }, 'fast');
-            }
-        }
     </script>
 </asp:Content>
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
